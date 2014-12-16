@@ -27,15 +27,15 @@ class NewVisitorTest(unittest.TestCase):
 		self.assertEqual(inputbox.get_attribute('placeholder'),'Enter a to-do item')
 
 		#She types "Buy Feathers"
-		inputbox.sendkeys('Buy peacock feathers')
+		inputbox.send_keys('Buy peacock feathers')
 
 		#When she hits enter, the page updates and the list now includes "Boy Feathers"
-		inputbox.sendkeys(keys.ENTER)
+		inputbox.send_keys(Keys.ENTER)
 
 		table= self.browser.find_element_by_id('id_list_table')
 		rows= table.find_elements_by_id('tr')
 
-		self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows))
+		self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows),"New to-do item is not in table")
 
 		#The site invites her to enter another item, she enters "Buy a hat"
 		self.fail('finish the test!')
