@@ -31,18 +31,27 @@ class NewVisitorTest(unittest.TestCase):
 
 		#When she hits enter, the page updates and the list now includes "Boy Feathers"
 		inputbox.send_keys(Keys.ENTER)
-
 		table= self.browser.find_element_by_id('id_list_table')
-		rows= table.find_elements_by_id('tr')
+		
+		rows= table.find_elements_by_tag_name('tr')
 
-		self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows),"New to-do item is not in table")
+		self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 
 		#The site invites her to enter another item, she enters "Buy a hat"
-		self.fail('finish the test!')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy a hat')
+		inputbox.send_keys(Keys.ENTER)
+
+
 		#She presses enter and the page updates and includes both items in the list
+		table= self.browser.find_element_by_id('id_list_table')
+		
+		rows= table.find_elements_by_tag_name('tr')
 
+		self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+		self.assertIn('2: Buy a hat', [row.text for row in rows])
 		#Cheryl wonders if the site will remember her list. The site has generated a url for her list
-
+		self.fail('finish the test!')
 		#She visits that URL and finds her to-do list in tact.
 
 		#Satisfied, she goes back to sleep.
