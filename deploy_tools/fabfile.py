@@ -30,17 +30,18 @@ def _get_latest_source(source_folder):
 	run('cd %s && git reset --hard %s' % (source_folder, current_commit))
 
 def _update_settings(source_folder, site_name):
-	settings_path = source_folder + '/superlists/settings.py'
-	sed(settings_path, "DEBUG = True", "DEBUG = False")
-	sed(settings_path, 
-		'ALLOWED_HOSTS =.+$',
-		'ALLOWED_HOSTS = ["%s"]' % (site_name,))
-	secret_key_file = source_folder + '/superlists/secret_key.py'
-	if not exists(secret_key_file):
-		chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-		key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
-    	append(secret_key_file, "SECRET_KEY = '%s'" % (key,))
-	append(settings_path, '\nfrom .secret_key import SECRET_KEY')
+    settings_path = source_folder + '/superlists/settings.py'
+    sed(settings_path, "DEBUG = True", "DEBUG = False")  #1
+    sed(settings_path,
+        'ALLOWED_HOSTS =.+$',
+        'ALLOWED_HOSTS = ["%s"]' % (site_name,)  #2
+    )
+    secret_key_file = source_folder + '/superlists/secret_key.py'
+    if not exists(secret_key_file):  #3
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+        key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
+        append(secret_key_file, "SECRET_KEY = '%s'" % (key,))
+    append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
 def _update_virtualenv(source_folder):
 	virtualenv_folder = source_folder + '/../virtualenv'
